@@ -1,0 +1,112 @@
+[
+  {
+    "EmployeeId": 1,
+    "RoleId": 1,
+    "ManagerId": 3,
+    "Department": "Software Development",
+    "Salary": 55000.00,
+    "StartDate": "2018-03-15T00:00:00Z",
+    "EndDate": "2020-03-15T00:00:00Z",
+    "Notes": "Started as Junior Engineer under Michael Brown."
+  },
+  {
+    "EmployeeId": 1,
+    "RoleId": 2,
+    "ManagerId": 3,
+    "Department": "Software Development",
+    "Salary": 75000.00,
+    "StartDate": "2020-03-16T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Promoted to Mid-level Engineer handling API integrations."
+  },
+  {
+    "EmployeeId": 2,
+    "RoleId": 2,
+    "ManagerId": 4,
+    "Department": "Platform Engineering",
+    "Salary": 72000.00,
+    "StartDate": "2020-07-01T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Joined as Mid Engineer under Sophia Patel."
+  },
+  {
+    "EmployeeId": 3,
+    "RoleId": 3,
+    "ManagerId": 5,
+    "Department": "Software Development",
+    "Salary": 95000.00,
+    "StartDate": "2016-01-10T00:00:00Z",
+    "EndDate": "2021-12-20T00:00:00Z",
+    "Notes": "Served as Senior Engineer and mentor for multiple teams."
+  },
+  {
+    "EmployeeId": 4,
+    "RoleId": 4,
+    "ManagerId": 6,
+    "Department": "Platform Engineering",
+    "Salary": 115000.00,
+    "StartDate": "2022-04-05T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Lead Engineer responsible for the API modernization initiative."
+  },
+  {
+    "EmployeeId": 5,
+    "RoleId": 3,
+    "ManagerId": 6,
+    "Department": "Data Services",
+    "Salary": 98000.00,
+    "StartDate": "2019-10-12T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Senior Engineer working on data pipeline reliability."
+  },
+  {
+    "EmployeeId": 6,
+    "RoleId": 5,
+    "ManagerId": 8,
+    "Department": "Engineering Leadership",
+    "Salary": 135000.00,
+    "StartDate": "2014-06-25T00:00:00Z",
+    "EndDate": "2019-09-01T00:00:00Z",
+    "Notes": "Principal Engineer guiding architecture and mentoring."
+  },
+  {
+    "EmployeeId": 7,
+    "RoleId": 2,
+    "ManagerId": 4,
+    "Department": "Web Applications",
+    "Salary": 70000.00,
+    "StartDate": "2021-11-10T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Full-stack developer on the e-commerce module."
+  },
+  {
+    "EmployeeId": 8,
+    "RoleId": 4,
+    "ManagerId": 6,
+    "Department": "Mobile & Cloud",
+    "Salary": 120000.00,
+    "StartDate": "2017-02-17T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Lead engineer managing cloud integration and deployments."
+  },
+  {
+    "EmployeeId": 9,
+    "RoleId": 6,
+    "ManagerId": null,
+    "Department": "Architecture Office",
+    "Salary": 150000.00,
+    "StartDate": "2013-08-19T00:00:00Z",
+    "EndDate": "2020-11-30T00:00:00Z",
+    "Notes": "Architect leading large-scale systems modernization efforts."
+  },
+  {
+    "EmployeeId": 10,
+    "RoleId": 2,
+    "ManagerId": 8,
+    "Department": "QA & Automation",
+    "Salary": 68000.00,
+    "StartDate": "2023-01-25T00:00:00Z",
+    "EndDate": null,
+    "Notes": "Automation engineer working under Olivia Garcia."
+  }
+]

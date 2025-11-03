@@ -1,0 +1,94 @@
+[
+  {
+    "Name": "John Doe",
+    "Address": "123 Main Street, New York, NY",
+    "PhoneNumber": "+1-212-555-7890",
+    "Email": "john.doe@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2018-03-15T00:00:00Z",
+    "DateOfExit": null
+    
+  },
+  {
+    "Name": "Priya Sharma",
+    "Address": "22 MG Road, Pune, India",
+    "PhoneNumber": "+91-9876543210",
+    "Email": "priya.sharma@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2020-07-01T00:00:00Z",
+    "DateOfExit": null
+    
+  },
+  {
+    "Name": "Michael Brown",
+    "Address": "47 Elm Street, Chicago, IL",
+    "PhoneNumber": "+1-773-555-4219",
+    "Email": "michael.brown@example.com",
+    "Status": "Inactive",
+    "DateOfJoining": "2016-01-10T00:00:00Z",
+    "DateOfExit": "2021-12-20T00:00:00Z"
+  },
+  {
+    "Name": "Sophia Patel",
+    "Address": "55 Richmond Avenue, Toronto, Canada",
+    "PhoneNumber": "+1-647-555-1943",
+    "Email": "sophia.patel@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2022-04-05T00:00:00Z",
+    "DateOfExit": null
+  },
+  {
+    "Name": "Carlos Rodriguez",
+    "Address": "Calle 45 #23-11, Bogotá, Colombia",
+    "PhoneNumber": "+57-320-555-7891",
+    "Email": "carlos.rodriguez@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2019-10-12T00:00:00Z",
+    "DateOfExit": null
+  },
+  {
+    "Name": "Emily Johnson",
+    "Address": "16 Oxford Street, London, UK",
+    "PhoneNumber": "+44-20-555-8934",
+    "Email": "emily.johnson@example.com",
+    "Status": "Inactive",
+    "DateOfJoining": "2014-06-25T00:00:00Z",
+    "DateOfExit": "2019-09-01T00:00:00Z"
+  },
+  {
+    "Name": "Rajesh Kumar",
+    "Address": "No. 12, Residency Road, Bangalore, India",
+    "PhoneNumber": "+91-9812345678",
+    "Email": "rajesh.kumar@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2021-11-10T00:00:00Z",
+    "DateOfExit": null
+  },
+  {
+    "Name": "Olivia Garcia",
+    "Address": "789 Ocean Drive, Miami, FL",
+    "PhoneNumber": "+1-305-555-2367",
+    "Email": "olivia.garcia@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2017-02-17T00:00:00Z",
+    "DateOfExit": null
+  },
+  {
+    "Name": "David Lee",
+    "Address": "89 Victoria Street, Sydney, Australia",
+    "PhoneNumber": "+61-2-5550-7788",
+    "Email": "david.lee@example.com",
+    "Status": "Inactive",
+    "DateOfJoining": "2013-08-19T00:00:00Z",
+    "DateOfExit": "2020-11-30T00:00:00Z"
+  },
+  {
+    "Name": "Fatima Noor",
+    "Address": "Al Nahda Street, Dubai, UAE",
+    "PhoneNumber": "+971-50-555-8844",
+    "Email": "fatima.noor@example.com",
+    "Status": "Active",
+    "DateOfJoining": "2023-01-25T00:00:00Z",
+    "DateOfExit": null
+  }
+]

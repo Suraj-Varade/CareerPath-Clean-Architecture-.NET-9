@@ -1,0 +1,50 @@
+[
+  {
+    "Title": "Software Engineer I",
+    "Level": "Junior",
+    "HierarchyLevel": 1,
+    "Description": "Entry-level engineer responsible for implementing small features, writing unit tests, and fixing bugs under supervision."
+  },
+  {
+    "Title": "Software Engineer II",
+    "Level": "Mid",
+    "HierarchyLevel": 2,
+    "Description": "Mid-level engineer who designs and develops moderate features, participates in code reviews, and collaborates with cross-functional teams."
+  },
+  {
+    "Title": "Senior Software Engineer",
+    "Level": "Senior",
+    "HierarchyLevel": 3,
+    "Description": "Experienced engineer responsible for system design, mentoring juniors, ensuring code quality, and driving technical initiatives."
+  },
+  {
+    "Title": "Lead Software Engineer",
+    "Level": "Lead",
+    "HierarchyLevel": 4,
+    "Description": "Technical leader overseeing multiple modules or teams, guiding architecture decisions, and ensuring alignment with business goals."
+  },
+  {
+    "Title": "Principal Engineer",
+    "Level": "Principal",
+    "HierarchyLevel": 5,
+    "Description": "Domain expert providing technical direction across projects, defining coding standards, and influencing strategic technology decisions."
+  },
+  {
+    "Title": "Software Architect",
+    "Level": "Architect",
+    "HierarchyLevel": 6,
+    "Description": "Responsible for end-to-end architecture, scalability, and technology roadmap. Ensures the system aligns with organizational and product vision."
+  },
+  {
+    "Title": "Engineering Manager",
+    "Level": "Manager",
+    "HierarchyLevel": 7,
+    "Description": "Leads engineering teams, balances technical direction and people management, and collaborates with stakeholders for project delivery."
+  },
+  {
+    "Title": "Director of Engineering",
+    "Level": "Director",
+    "HierarchyLevel": 8,
+    "Description": "Oversees multiple teams or departments, defines engineering vision, manages budgets, and aligns technology initiatives with company goals."
+  }
+]
