@@ -43,22 +43,8 @@ jobs:
 
       # Test + Code Coverage
       - name: Test
-        run: dotnet test ./API.Tests/API.Tests.csproj \
-          --collect:"XPlat Code Coverage" \
-          --results-directory "./TestResults" \
-          --no-build
-
-      # Convert Cobertura → OpenCover
-      - name: Convert Coverage
-        run: |
-          report=$(find ./TestResults -name "coverage.cobertura.xml" | head -n 1)
-          echo "Found report: $report"
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator \
-            -reports:$report \
-            -targetdir:coveragereport \
-            -reporttypes:opencover
-
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        
       # Cleanup publish
       - name: Clean API publish output
         run: rm -rf ${{ env.BUILD_OUTPUT }}
