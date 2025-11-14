@@ -16,4 +16,6 @@ public class RequestParams
     public string? OrderBy { get; set; } = "joiningdatedesc";
     
     public string? SearchTerm { get; set; }
+
+    public string? IsActive { get; set; }
 }

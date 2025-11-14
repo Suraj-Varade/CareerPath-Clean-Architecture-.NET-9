@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.DTOs;
+namespace API.DTOs;
 
 public class CreateEmployeeDto
 {
@@ -14,4 +14,6 @@ public class CreateEmployeeDto
     public string Email { get; set; } = string.Empty;
 
     public string Status { get; set; } = "Active";
+    
+    public DateTime DateOfJoining { get; set; }
 }

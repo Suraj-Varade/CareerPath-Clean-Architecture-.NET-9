@@ -62,7 +62,7 @@
   {
     "EmployeeId": 6,
     "RoleId": 5,
-    "ManagerId": 8,
+    "ManagerId": null,
     "Department": "Engineering Leadership",
     "Salary": 135000.00,
     "StartDate": "2014-06-25T00:00:00Z",

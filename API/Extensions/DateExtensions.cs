@@ -1,4 +1,4 @@
-namespace Infrastructure.Extensions;
+namespace API.Extensions;
 
 public static class DateExtensions
 {

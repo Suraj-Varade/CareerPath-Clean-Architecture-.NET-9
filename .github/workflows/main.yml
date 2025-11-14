@@ -1,1 +1,89 @@
+name: CareerPath Workflow
 
+on: 
+  push:
+    branches: ['main']
+    paths-ignore:
+      - 'README.md'
+  
+  workflow_dispatch: 
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  BUILD_OUTPUT: './publish_output'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+          
+      - name: Restore dependencies
+        run: dotnet restore ./CareerPath.sln
+      
+      - name: Build
+        run: dotnet build ./API/API.csproj --configuration Release
+        
+      - name: Test
+        run: dotnet test
+        
+      # clean the API output before publishing
+      - name: Clean API publish output
+        run: rm -rf ${{env.BUILD_OUTPUT}}
+      
+      - name: publish
+        run: dotnet publish ./API/API.csproj -c Release -o ${{env.BUILD_OUTPUT}} --no-build
+        
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-app
+          path: ${{env.BUILD_OUTPUT}}
+
+
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    
+#    environment:
+#      name: 'Development'
+#      url: ${{steps.deploy-to-azure-web-app.outputs.webapp-url}}
+#    
+#    steps:
+#      - name: checkout
+#        uses: actions/checkout@v5
+#
+#      - name: Download artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: dotnet-app
+#          path: ${{env.BUILD_OUTPUT}}
+#
+#      - name: Azure login
+#        uses: azure/login@v2
+#        with:
+#          creds: ${{secrets.AZURE_CREDENTIALS}}
+#      
+#      # below step will create azure resources - using main_dev.bicep file.
+#      - name: Deploy azure resources - using main_dev.bicep file
+#        uses: azure/CLI@v2
+#        with:
+#          inlineScript: |
+#            az group create --name ticketifyne-dev-resgrp --location centralindia
+#            az deployment group create \
+#            --resource-group ticketifyne-dev-resgrp \
+#            --template-file .github/infra/templates/main_dev.bicep \
+#            --parameters webAppName=${{env.AZURE_WEBAPP_NAME}} \
+#            sqlAdminPassword=${{secrets.AZURE_SQL_PASSWORD}} 
+#
+#      - name: Deploy to azure web app
+#        id: deploy-to-azure
+#        uses: azure/webapps-deploy@v3
+#        with:
+#          app-name: ${{env.AZURE_WEBAPP_NAME}}
+#          package: ${{env.BUILD_OUTPUT}}

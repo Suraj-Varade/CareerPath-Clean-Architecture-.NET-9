@@ -1,16 +1,38 @@
 @API_HostAddress = http://localhost:5078
 
+### Get Employees
 GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=5
 Accept: application/json
 
-###
-GET {{API_HostAddress}}/api/employees/1
+### Get Employee by Id
+GET {{API_HostAddress}}/api/employees/14
 Accept: application/json
 
-###
+### Get Employee with invalid Id
+GET {{API_HostAddress}}/api/employees/10500 
+Accept: application/json
+
+### Get Employee by SearchTerm
 GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=5&SearchTerm=John
 Accept: application/json
 
-###
+### Get Employees (OrderBy joiningdatedesc)
 GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=5&OrderBy=joiningdatedesc
 Accept: application/json
+
+### Get Roles
+GET {{API_HostAddress}}/api/roles
+Accept: application/json
+
+### Add Employee
+POST {{API_HostAddress}}/api/employees
+Content-Type: application/json
+
+{
+  "Name": "Kent Bohr",
+  "Address" : "st.345 apartment no.4, east block, kent circle, LA",
+  "PhoneNumber": "23242324975",
+  "Email": "kent@example.com",
+  "Status": "Active",
+  "DateOfJoining": "2025-11-10"
+}

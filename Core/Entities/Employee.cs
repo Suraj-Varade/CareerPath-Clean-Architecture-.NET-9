@@ -19,7 +19,7 @@ public class Employee : BaseEntity
 
     //Employment details
     public string Status { get; set; } = "Active";
-    public DateTime DateOfJoining { get; set; }
+    public DateTime DateOfJoining { get; set; } = DateTime.UtcNow;
     public DateTime? DateOfExit { get; set; }
 
     [NotMapped]
