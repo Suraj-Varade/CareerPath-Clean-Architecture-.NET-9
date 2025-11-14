@@ -1,12 +1,17 @@
-name: CareerPath Workflow
+name: CareerPath Workflow - (with SonarQube)
 
-on: 
+on:
   push:
     branches: ['main']
     paths-ignore:
       - 'README.md'
   
-  workflow_dispatch: 
+  pull_request:
+    branches: ['main']
+    paths-ignore:
+      - 'README.md'
+  
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: '9.0.x'
@@ -15,35 +20,94 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      sonarqube:
+        image: sonarqube:lts
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd="curl -f http://localhost:9000 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    
     steps:
+
       - uses: actions/checkout@v5
-        
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{env.DOTNET_VERSION}}
-          
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Wait for SonarQube to start
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:9000 >/dev/null; then
+              echo "SonarQube is up !!!"; break;
+            fi
+            echo "Waiting for SonarQube...."; sleep 10
+          done
+
+      - name: Install SonarScanner
+        uses: sonarsource/sonarqube-scan-action@v2
+
+      - name: Begin Sonar Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:"CareerPathApp" \
+            /d:sonar.host.url="http://localhost:9000" \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+
       - name: Restore dependencies
         run: dotnet restore ./CareerPath.sln
-      
+
       - name: Build
         run: dotnet build ./API/API.csproj --configuration Release
-        
-      - name: Test
-        run: dotnet test /p:CollectCoverage=true
-        
-      # clean the API output before publishing
+
+      - name: Test (Generate Coverage)
+        run: dotnet test ./API.Tests/API.Tests.csproj \
+          --collect:"XPlat Code Coverage" \
+          --results-directory "./TestResults"
+
+      - name: Convert Coverage to OpenCover
+        run: |
+          report=$(find ./TestResults -name "coverage.cobertura.xml" | head -n 1)
+          echo "Found report: $report"
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator \
+            -reports:$report \
+            -targetdir:coveragereport \
+            -reporttypes:opencover
+
+      - name: End Sonar Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner end \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
       - name: Clean API publish output
-        run: rm -rf ${{env.BUILD_OUTPUT}}
-      
-      - name: publish
-        run: dotnet publish ./API/API.csproj -c Release -o ${{env.BUILD_OUTPUT}} --no-build
-        
-      - name: upload artifact
+        run: rm -rf ${{ env.BUILD_OUTPUT }}
+
+      - name: Publish
+        run: dotnet publish ./API/API.csproj -c Release -o ${{ env.BUILD_OUTPUT }} --no-build
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: dotnet-app
-          path: ${{env.BUILD_OUTPUT}}
+          path: ${{ env.BUILD_OUTPUT }}
+
+      - name: Upload Coverage Report (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: coveragereport
 
 
 #  deploy:
