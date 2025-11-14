@@ -26,11 +26,13 @@ jobs:
         image: sonarqube:lts
         ports:
           - 9000:9000
+        env:
+          SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
         options: >-
           --health-cmd="exit 0"
           -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
           -e ES_JAVA_OPTS="-Xms512m -Xmx512m"
-    
+        
     steps:
 
       - uses: actions/checkout@v5
