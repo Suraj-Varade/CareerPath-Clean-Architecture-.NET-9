@@ -30,7 +30,7 @@ jobs:
         run: dotnet build ./API/API.csproj --configuration Release
         
       - name: Test
-        run: dotnet test
+        run: dotnet test /p:CollectCoverage=true
         
       # clean the API output before publishing
       - name: Clean API publish output
