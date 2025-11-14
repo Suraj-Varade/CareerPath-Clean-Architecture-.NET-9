@@ -58,7 +58,7 @@ jobs:
         run: |
           dotnet sonarscanner begin \
             /k:"CareerPathApp" \
-            /d:sonar.host.url="http://localhost:9000" \
+            /d:sonar.host.url="http://sonarqube:9000" \
             /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
 
