@@ -1,7 +1,7 @@
 @API_HostAddress = http://localhost:5078
 
 ### Get Employees
-GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=5
+GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=50
 Accept: application/json
 
 ### Get Employee by Id
@@ -33,6 +33,5 @@ Content-Type: application/json
   "Address" : "st.345 apartment no.4, east block, kent circle, LA",
   "PhoneNumber": "23242324975",
   "Email": "kent@example.com",
-  "Status": "Active",
-  "DateOfJoining": "2025-11-10"
+  "Status": "Active"
 }
