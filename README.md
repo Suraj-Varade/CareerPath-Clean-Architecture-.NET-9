@@ -9,7 +9,7 @@ CareerPath is an ASP.NET Core Web API (targeting .NET 9) using:
 * Serilog for logging (console + file)
 * Seed data for quick demo
 * Unit tests (xUnit), Coverlet for coverage.
-* SonarQube Integration
+* SonarQube Integration (via SonarCloud)
 
 This repo includes a ready GitHub Actions workflow to build/publish the API and SonarQube integration (SonarCloud).
 
@@ -20,7 +20,7 @@ This repo includes a ready GitHub Actions workflow to build/publish the API and 
 - **DevOps / CI-CD:** Github actions for build, test and deploy, automated build -> publish -> deploy pipelines, secrets management via Github Environments.
 - **Testing:** xUnit for unit testing, In-Memery EF Core for repository testing.
 - **Architecture:** Clean architecture, Interface-driven design, dependency injection, EntityFramework Core, in-memory store (test)
-- **Code Quality & Security:** SonarQube
+- **Code Quality & Security:** SonarQube (via SonarCloud)
 
 ## Project Structure
 ```text
@@ -152,10 +152,6 @@ dotnet ef migrations add InitialCreate -p Infrastructure/Infrastructure.csproj -
 ```bash
 dotnet ef database update -p Infrastructure/Infrastructure.csproj -s API/API.csproj
 ```
-**Running migrations during CI/CD / Deploy**
-You can:
-* Run dotnet ef database update as a step in your GitHub Action (recommended for dev/integration), or
-* Keep context.Database.MigrateAsync() in startup (wrap in try-catch and log), but ensure migrations are committed and DB state is compatible (avoid EnsureCreated).
 
 **Tests & Code Coverage**
 * Tests are in Test/ (xUnit).
@@ -169,20 +165,7 @@ Example test command (CI):
 ```
 
 **Code Review and Security**
-* SonarQube with SonarCloud.
-
-Ensure tests are built before running tests (remove --no-build if you want to build in the same job).
-
-## GitHub Actions CI/CD (recommended pipeline)
-High-level flow:
-1. Checkout
-2. Setup .NET (DOTNET_VERSION: '9.0.x')
-3. Restore dependencies (solution)
-4. Build API project
-5. Run tests (optional; ensure tests succeed before publish)
-6. Clean publish folder
-7. Publish API project to publish_output
-
+* SonarQube (via SonarCloud).
 
 ## 🚀 API Endpoints
 The API follows a RESTful approach for managing employee and role data. The base path is /api.
@@ -385,6 +368,29 @@ public async Task<PagedResult<Employee>> GetEmployeesAsync(RequestParams? reques
 ```
 By including ```ch.Manager```, the repository pulls the related Employee record (the manager) for every career history entry, 
 ensuring the API has the data needed to display the manager's name (```ch.Manager.Name```) in the final DTO
+
+## 🛡️ Code Quality & Security (SonarQube Integration)
+Code quality and security analysis is enforced using SonarQube (via SonarCloud), which is integrated directly into the GitHub Actions CI/CD pipeline. Every push to the main branch and every Pull Request triggers a comprehensive analysis.
+
+### Configuration
+* Tool: SonarScanner for .NET (executed via ```dotnet-sonarscanner```).
+* Analysis Service: **SonarCloud**.
+* Token: The analysis requires a secure token, stored as a GitHub Secret named ```SONAR_TOKEN```.
+* GitHub Actions Workflow (```.github/workflows/sonarqube-build.yml```)
+
+![SonarQube issues list](Images/SonarQube-Issues.png)
+![SonarQube issues list](Images/SonarQube-Issues-1.png)
+![SonarQube issues list](Images/SonarQube-Issues-2.png)
+
+## GitHub Actions CI/CD (recommended pipeline)
+High-level flow:
+1. Checkout
+2. Setup .NET (DOTNET_VERSION: '9.0.x')
+3. Restore dependencies (solution)
+4. Build API project
+5. Run tests (optional; ensure tests succeed before publish)
+6. Clean publish folder
+7. Publish API project to publish_output
 
 ## Useful commands (summary)
 Build & publish API:
