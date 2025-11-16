@@ -171,17 +171,18 @@ Example test command (CI):
 The API follows a RESTful approach for managing employee and role data. The base path is /api.
 
 ### Employees
-1. GET
-    - ```/api/employees```	
-    - Retrieves a paginated list of all employees with their full career history. Supports filtering, searching, and sorting.
 
-2. GET	
-   - ```/api/employees/{id}```
-   - Retrieves a single employee by ID with their full career history.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/employees` | Retrieves a paginated list of all employees with their full career history. Supports filtering, searching, and sorting. |
+| `GET` | `/api/employees/{id}` | Retrieves a single employee by ID with their full career history. |
+| `POST` | `/api/employees` | Creates a new employee record. |
 
-3. POST
-    - ```/api/employees```
-    - Creates a new employee record. (excluding CareerHistory,Roles)
+### Roles
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/roles` | Retrieves a list of all defined roles. |
 
 ### Sample request and response
 ```GET  /api/employees```

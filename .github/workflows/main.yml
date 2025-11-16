@@ -1,4 +1,4 @@
-name: CareerPath Workflow - (SonarCloud)
+name: CareerPath - main
 
 on:
   push:
