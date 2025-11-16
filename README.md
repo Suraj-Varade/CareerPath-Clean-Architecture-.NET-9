@@ -88,13 +88,13 @@ CareerPath/
 * SQL Server locally / Azure SQL connection string for production testing
 
 **1. Clone the repo**
-```
+```bash
 git clone https://github.com/Suraj-Varade/CareerPath-Clean-Architecture-.NET-9.git
 
 cd CareerPath
 ```
 - Use appsettings.Development.json for local development (do NOT commit secrets).
-- Alternatively, you can aslo use dotnet user-secrets for local secrets
+- Alternatively, you can also use ```dotnet user-secrets``` for local secrets
 ```text
 "ConnectionStrings": {
     "DefaultConnection": "{yourDbConnectionString}"
@@ -102,7 +102,7 @@ cd CareerPath
 ```
 
 **2. Restore, build and run**
-```text
+```bash
 # from repo root
 dotnet restore CareerPath.sln
 
@@ -129,7 +129,7 @@ http://localhost:5078/api/employees
 
 **Ef migrations:**
 * dotnet-ef tool if you manage migrations locally:
-```text
+```bash
 dotnet tool install --global dotnet-ef
 ```
 
@@ -142,11 +142,14 @@ dotnet tool install --global dotnet-ef
 
 **Local migration workflow**
 If you want to create/update migrations locally:
-```text
-# Add a migration (project containing DbContext is Infrastructure)
-dotnet ef migrations add InitialCreate -p Infrastructure/Infrastructure.csproj -s API/API.csproj
 
-# Apply locally (if connection string points to your local DB)
+* Add a migration (project containing DbContext is Infrastructure)
+```bash
+dotnet ef migrations add InitialCreate -p Infrastructure/Infrastructure.csproj -s API/API.csproj
+```
+
+* Apply locally (if connection string points to your local DB)
+```bash
 dotnet ef database update -p Infrastructure/Infrastructure.csproj -s API/API.csproj
 ```
 **Running migrations during CI/CD / Deploy**
@@ -180,6 +183,208 @@ High-level flow:
 6. Clean publish folder
 7. Publish API project to publish_output
 
+
+## 🚀 API Endpoints
+The API follows a RESTful approach for managing employee and role data. The base path is /api.
+
+### Employees
+1. GET
+    - ```/api/employees```	
+    - Retrieves a paginated list of all employees with their full career history. Supports filtering, searching, and sorting.
+
+2. GET	
+   - ```/api/employees/{id}```
+   - Retrieves a single employee by ID with their full career history.
+
+3. POST
+    - ```/api/employees```
+    - Creates a new employee record. (excluding CareerHistory,Roles)
+
+### Sample request and response
+```GET  /api/employees```
+* Description: Get a paginated list of employees.
+* Query Parameters:
+    * ```pageNumber```: The page number.
+    * ```pageSize```: The number of items per page.
+    * ```searchTerm```: (string) Filter by employee Name, Email, or PhoneNumber.
+    * ```isActive```: (boolean string, e.g., "true", "false") Filter by Active or Inactive status.
+    * ```orderBy```: (string) Sort by joiningDateDesc (most recent first) or default (oldest first).
+* Sample Request (API.http format)
+```
+GET http://localhost:5078/api/employees?pageNumber=1&pageSize=2&isActive=true&searchTerm=john&orderBy=joiningDateDesc
+Accept: application/json
+```
+* Sample Response (Success : 200 - OK)
+```json
+{
+  "totalCount": 1,
+  "data": [
+    {
+      "name": "John Doe",
+      "address": "123 Main Street, New York, NY",
+      "phoneNumber": "+1-212-555-7890",
+      "email": "john.doe@example.com",
+      "status": "Active",
+      "dateOfJoining": "2018-03-15",
+      "dateOfExit": null,
+      "tenureInYears": 7,
+      "careerDetails": [
+        {
+          "role": {
+            "title": "Software Engineer II",
+            "level": "Mid"
+          },
+          "managerName": "Michael Brown",
+          "department": "Software Development",
+          "salary": "¤75,000.00",
+          "startDate": "2020-03-16",
+          "endDate": null,
+          "notes": "Promoted to Mid-level Engineer handling API integrations.",
+          "durationInMonths": 69
+        },
+        {
+          "role": {
+            "title": "Software Engineer I",
+            "level": "Junior"
+          },
+          "managerName": "Michael Brown",
+          "department": "Software Development",
+          "salary": "¤55,000.00",
+          "startDate": "2018-03-15",
+          "endDate": "2020-03-15",
+          "notes": "Started as Junior Engineer under Michael Brown.",
+          "durationInMonths": 24
+        }
+      ]
+    }
+  ]
+}
+```
+### API/API.http (listed endpoints)
+```
+@API_HostAddress = http://localhost:5078
+
+### Get Employees
+GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=50
+Accept: application/json
+
+
+### Get Employee by Id
+GET {{API_HostAddress}}/api/employees/14
+Accept: application/json
+
+
+### Get Employee with invalid Id
+GET {{API_HostAddress}}/api/employees/10500 
+Accept: application/json
+
+
+### Get Employee by SearchTerm
+GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=5&SearchTerm=John
+Accept: application/json
+
+
+### Get Employees (OrderBy joiningdatedesc)
+GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=5&OrderBy=joiningdatedesc
+Accept: application/json
+
+
+### Get Roles
+GET {{API_HostAddress}}/api/roles
+Accept: application/json
+
+
+### Add Employee
+POST {{API_HostAddress}}/api/employees
+Content-Type: application/json
+
+{
+  "Name": "Kent Bohr",
+  "Address" : "st.345 apartment no.4, east block, kent circle, LA",
+  "PhoneNumber": "23242324975",
+  "Email": "kent@example.com",
+  "Status": "Active"
+}
+
+
+### Get Employee
+GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=2&isActive=true&searchTerm=john&orderBy=joiningDateDesc
+Accept: application/json
+```
+
+## 💾 EF Core Data Modeling: Employee/Manager Self-Join
+This project uses Entity Framework Core (EF Core) to manage the database schema. A key aspect of the domain is defining the reporting hierarchy, which is handled using a self-join relationship modeled through the CareerHistory entity.
+
+### How the Relationship Works
+The self-join is established between two instances of the ```Employee``` entity: one acts as the **Employee**, 
+and the other acts as the **Manager**. This relationship is mediated by the ```CareerHistory``` table.
+
+The ```CareerHistory``` entity has three foreign keys pointing to other tables:
+1. ```EmployeeId```: Points to the ```Employee``` (the person whose career path is being recorded).
+2. ```RoleId```: Points to the ```Role```.
+3. ```ManagerId```: Points to the ```Employee``` (the person managing the employee for that specific period).
+
+1. The ```CareerHistory``` Entity
+   The ```CareerHistory``` entity defines the foreign key (```ManagerId```) and the navigation property (```Manager```) for the self-join:
+
+```C#
+public class CareerHistory : BaseEntity
+{
+    // ... other properties ...
+    
+    public int? ManagerId { get; set; } // Foreign Key: Reference to Employee/Manager
+
+    // Navigation Property
+    [JsonIgnore]
+    public Employee? Manager { get; set; } // The Manager (Self-join target)
+    
+    // ... other properties ...
+}
+```
+
+2. The ```Employee``` Entity (Defining the Inverse) 🔄
+To complete the self-join, the ```Employee``` entity must define two inverse collections, 
+telling EF Core which records in ```CareerHistory``` belong to the **employee** as the employee 
+and which belong to them as the **manager**.
+
+```C#
+public class Employee : BaseEntity
+{
+    // ...
+    // Collection 1: Records where this Employee is the primary employee
+    public ICollection<CareerHistory> EmployeeCareerHistories { get; set; } = new List<CareerHistory>();
+
+    // Collection 2: Records where this Employee is acting as a Manager
+    public ICollection<CareerHistory> ManagerCareerHistories { get; set; } = new List<CareerHistory>();
+}
+```
+This configuration explicitly tells EF Core to manage the one-to-many relationship 
+(```Employee``` to ```CareerHistory```) using two separate pathways:
+* The relationship between ```Employee.EmployeeCareerHistories``` and ```CareerHistory.EmployeeId```.
+* The relationship between ```Employee.ManagerCareerHistories``` and ```CareerHistory.ManagerId```.
+
+### Eager Loading in the Repository
+When retrieving an employee, the CareerPathRepository must use Eager Loading (.Include() and .ThenInclude()) to pull in all related career data, including the manager's name, in a single database query.
+This is demonstrated in the ```GetEmployeesAsync``` method:
+
+```C#
+// Infrastructure/Repositories/CareerPathRepository.cs
+
+public async Task<PagedResult<Employee>> GetEmployeesAsync(RequestParams? requestParams)
+{
+    var query = context.Employees
+    .AsNoTracking()
+    .Include(e => e.EmployeeCareerHistories)
+    .ThenInclude(ch => ch.Role)
+    .Include(e => e.EmployeeCareerHistories)
+    .ThenInclude(ch => ch.Manager) // Crucial line for loading the Manager details
+    .AsQueryable();
+
+    // ... filtering and pagination logic ...
+}
+```
+By including ```ch.Manager```, the repository pulls the related Employee record (the manager) for every career history entry, 
+ensuring the API has the data needed to display the manager's name (```ch.Manager.Name```) in the final DTO
 
 ## Useful commands (summary)
 Build & publish API:

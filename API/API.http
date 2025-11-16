@@ -35,3 +35,7 @@ Content-Type: application/json
   "Email": "kent@example.com",
   "Status": "Active"
 }
+
+### Get Employee
+GET {{API_HostAddress}}/api/employees?pageNumber=1&pageSize=2&isActive=true&searchTerm=john&orderBy=joiningDateDesc
+Accept: application/json
